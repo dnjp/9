@@ -1,0 +1,89 @@
+bind -a $home/bin/rc /bin
+bind -a $home/bin/$cputype /bin
+bind -a /$cputype/bin /bin
+if(! syscall create /tmp/xxx 1 0666 >[2]/dev/null)
+	ramfs	# in case we're running off a cd
+
+font=/lib/font/bit/lucidasans/unicode.8.font
+editor=E
+
+# git things
+bind $home/lib/profile $home/src/9/lib/profile
+bind $home/lib/git $home/src/9/lib/git
+bind $home/bin/rc $home/src/9/bin/rc
+
+# go
+GO111MODULE=on
+bind -a /sys/lib/go/$cputype/1.15.6/bin /bin
+
+# setup executables
+bind -qa $home/bin/rc /bin
+bind -qa $home/bin/$cputype /bin
+
+# start services
+ip/ipconfig
+webcookies
+webfs
+plumber
+
+echo -n accelerated > '#m/mousectl'
+echo -n 'res 3' > '#m/mousectl'
+
+# sources
+9fs 9pio
+9fs 9contrib
+9fs 9front
+
+# authentication
+cat $home/lib/ssh/key >/mnt/factotum/ctl
+ssh git@github.com
+ssh git@git.sr.ht
+
+fn '..'{ cd .. }
+fn h{ cd $home }
+fn l{ ls $* }
+fn sdf{ ftpfs -a ftp@sdf.org sdf.org }
+fn gp{ git/push $* }
+fn gs{ git/walk $* }
+fn gc{ git/commit $* }
+fn ga{ git/add $* }
+fn mar{ cd /mnt/term/home/daniel/src/work/martin-bidder }
+
+ignore='tags|TAGS|node_modules|.git'
+fn f{
+	pattern=$*
+	for(file in `{du -a ./ | awk '{print $2}' | sed 's/\.\/\//.\//g' | grep -v $ignore}){
+		if(! test -d $file && ! test -x $file){
+			grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
+		}
+	}
+}
+
+
+switch($service){
+
+case terminal
+	if(! webcookies >[2]/dev/null)
+		webcookies -f /tmp/webcookies
+	webfs
+	plumber
+	echo -n accelerated > '#m/mousectl'
+	echo -n 'res 3' > '#m/mousectl'
+	prompt=('term% ' '	')
+	fn term%{ $* }
+	rio -s -b -i riostart
+case cpu
+	bind /mnt/term/dev/cons /dev/cons
+	bind -q /mnt/term/dev/consctl /dev/consctl
+	>[2] /dev/null {
+		cp /dev/sysname /mnt/term/dev/label
+		if(wsys=`{cat /mnt/term/env/wsys})
+			wsys=/mnt/term^$wsys
+	} 
+	bind -a /mnt/term/dev /dev
+	prompt=('; ' '	')
+	fn cpu%{ $* }
+	rio -s -b -i riostart
+case con
+	prompt=('cpu% ' '	')
+}
