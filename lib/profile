@@ -5,12 +5,13 @@ if(! syscall create /tmp/xxx 1 0666 >[2]/dev/null)
 	ramfs	# in case we're running off a cd
 
 font=/lib/font/bit/lucidasans/unicode.8.font
+
 editor=E
 
 # git things
 bind $home/lib/profile $home/src/9/lib/profile
 bind $home/lib/git $home/src/9/lib/git
-bind $home/bin/rc $home/src/9/bin/rc
+# bind $home/bin/rc $home/src/9/bin/rc
 
 # go
 GO111MODULE=on
@@ -19,6 +20,10 @@ bind -a /sys/lib/go/$cputype/1.15.6/bin /bin
 # setup executables
 bind -qa $home/bin/rc /bin
 bind -qa $home/bin/$cputype /bin
+
+# email
+# auth/factotum -g 'proto=pass server=smtp.gmail.com service=smtp user=daniel@martin.ai !password?'
+# auth/factotum -g 'proto=pass server=imap.gmail.com service=imap user=daniel@martin.ai !password?'
 
 # start services
 ip/ipconfig
@@ -44,20 +49,18 @@ fn h{ cd $home }
 fn l{ ls $* }
 fn sdf{ ftpfs -a ftp@sdf.org sdf.org }
 fn gp{ git/push $* }
-fn gs{ git/walk $* }
+fn gs{ git/walk $* | grep '^M' }
 fn gc{ git/commit $* }
 fn ga{ git/add $* }
-fn mar{ cd /mnt/term/home/daniel/src/work/martin-bidder }
-
-ignore='tags|TAGS|node_modules|.git'
-fn f{
-	pattern=$*
-	for(file in `{du -a ./ | awk '{print $2}' | sed 's/\.\/\//.\//g' | grep -v $ignore}){
-		if(! test -d $file && ! test -x $file){
-			grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
-		}
+fn gr{ 
+	for(f in `{git/branch $1 | awk '{print $1}'}){
+		git/rm $f
 	}
 }
+fn mar{ cd $home/src/work/martin-bidder }
+fn 9mar{ cd /mnt/term/home/daniel/src/work/martin-bidder }
+fn per{ cd $home/src/personal }
+fn 9per{ cd /mnt/term/home/daniel/src/personal }
 
 
 switch($service){
