@@ -4,16 +4,15 @@ bind -a /$cputype/bin /bin
 if(! syscall create /tmp/xxx 1 0666 >[2]/dev/null)
 	ramfs	# in case we're running off a cd
 
-# font=/lib/font/bit/lucidasans/unicode.8.font
-font=/lib/font/bit/vga/unicode.font
-
+font=/lib/font/bit/lucidasans/unicode.8.font
+# font=/lib/font/bit/vga/unicode.font
 
 editor=E
 
 # git things
 bind $home/lib/profile $home/src/9/lib/profile
 bind $home/lib/git $home/src/9/lib/git
-# bind $home/bin/rc $home/src/9/bin/rc
+bind $home/bin/rc $home/src/9/bin/rc
 
 # go
 GO111MODULE=on
