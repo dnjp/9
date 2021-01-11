@@ -4,7 +4,9 @@ bind -a /$cputype/bin /bin
 if(! syscall create /tmp/xxx 1 0666 >[2]/dev/null)
 	ramfs	# in case we're running off a cd
 
-font=/lib/font/bit/lucidasans/unicode.8.font
+# font=/lib/font/bit/lucidasans/unicode.8.font
+font=/lib/font/bit/vga/unicode.font
+
 
 editor=E
 
@@ -74,7 +76,7 @@ case terminal
 	echo -n 'res 3' > '#m/mousectl'
 	prompt=('term% ' '	')
 	fn term%{ $* }
-	rio -s -b -i riostart
+	rio -s -i riostart
 case cpu
 	bind /mnt/term/dev/cons /dev/cons
 	bind -q /mnt/term/dev/consctl /dev/consctl
@@ -86,7 +88,7 @@ case cpu
 	bind -a /mnt/term/dev /dev
 	prompt=('; ' '	')
 	fn cpu%{ $* }
-	rio -s -b -i riostart
+	rio -s -i riostart
 case con
 	prompt=('cpu% ' '	')
 }

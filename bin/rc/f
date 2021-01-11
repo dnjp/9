@@ -1,0 +1,9 @@
+#!/bin/rc
+
+ignore='tags|TAGS|node_modules|.git'
+pattern=$*
+for(file in `{walk ./ | grep -v $ignore}){
+	if(! test -d $file && ! test -x $file){
+		grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
+	}
+}
