@@ -8,5 +8,3 @@ for(file in `{walk ./ | grep -v $ignore}){
 		grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
 	}
 }
-# isascii=`{file ./ad | awk '{print $2}' | grep Ascii}
-# if(1 = $#isascii) echo 'yup'

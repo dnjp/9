@@ -5,7 +5,6 @@ if(! syscall create /tmp/xxx 1 0666 >[2]/dev/null)
 	ramfs	# in case we're running off a cd
 
 font=/lib/font/bit/lucidasans/unicode.8.font
-# font=/lib/font/bit/vga/unicode.font
 
 editor=E
 
@@ -18,10 +17,6 @@ bind $home/bin/rc $home/src/9/bin/rc
 GO111MODULE=on
 bind -a /sys/lib/go/$cputype/1.15.6/bin /bin
 bind -a $home/go/bin /bin
-
-# email
-# auth/factotum -g 'proto=pass server=smtp.gmail.com service=smtp user=daniel@martin.ai !password?'
-# auth/factotum -g 'proto=pass server=imap.gmail.com service=imap user=daniel@martin.ai !password?'
 
 # start services
 ip/ipconfig
@@ -88,3 +83,4 @@ case cpu
 case con
 	prompt=('cpu% ' '	')
 }
+
