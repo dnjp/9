@@ -17,10 +17,7 @@ bind $home/bin/rc $home/src/9/bin/rc
 # go
 GO111MODULE=on
 bind -a /sys/lib/go/$cputype/1.15.6/bin /bin
-
-# setup executables
-bind -qa $home/bin/rc /bin
-bind -qa $home/bin/$cputype /bin
+bind -a $home/go/bin /bin
 
 # email
 # auth/factotum -g 'proto=pass server=smtp.gmail.com service=smtp user=daniel@martin.ai !password?'

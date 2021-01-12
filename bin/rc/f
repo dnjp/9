@@ -3,7 +3,10 @@
 ignore='tags|TAGS|node_modules|.git'
 pattern=$*
 for(file in `{walk ./ | grep -v $ignore}){
-	if(! test -d $file && ! test -x $file){
+	isascii=`{ file $file | grep -v *.out | awk '{print $2}' | grep Ascii }
+	if(1 = $isascii){
 		grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
 	}
 }
+# isascii=`{file ./ad | awk '{print $2}' | grep Ascii}
+# if(1 = $#isascii) echo 'yup'
