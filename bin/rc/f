@@ -1,9 +1,11 @@
 #!/bin/rc
 
 ignore='tags|TAGS|node_modules|.git'
-pattern=$*
+pattern=$1
+# depth='-n ,'^$2 
+
 for(file in `{walk ./ | grep -v $ignore}){
-	isascii=`{ file $file | grep -v *.out | awk '{print $2}' | grep Ascii }
+	isascii=`{ file $file | grep -v *.out | grep 'Ascii|program' }
 	if(1 = $isascii){
 		grep -n $pattern $file | awk '{print "'^$file:^'"$0}'
 	}

@@ -1,0 +1,5 @@
+#!/bin/rc
+
+git/walk $* | grep '^M|^A|^D'
+
+

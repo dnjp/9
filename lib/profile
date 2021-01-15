@@ -41,10 +41,6 @@ fn '..'{ cd .. }
 fn h{ cd $home }
 fn l{ ls $* }
 fn sdf{ ftpfs -a ftp@sdf.org sdf.org }
-fn gp{ git/push $* }
-fn gs{ git/walk $* | grep '^M' }
-fn gc{ git/commit $* }
-fn ga{ git/add $* }
 fn gr{ 
 	for(f in `{git/branch $1 | awk '{print $1}'}){
 		git/rm $f
